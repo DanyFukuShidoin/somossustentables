@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.2.7.RELEASE</version>
+	</parent>
+	<groupId>com.somos</groupId>
+	<artifactId>sustentables</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>sustentables</name>
+	<description>Initial project for Spring Boot</description>
+
+	<properties>
+		<java.version>1.8</java.version>
+		<kotlin.version>1.3.72</kotlin.version>
+		<flyway.version>6.4.1</flyway.version>
+		<mysql-connector-java.version>8.0.17</mysql-connector-java.version>
+		<kotlin-ktlint.version>0.29.0</kotlin-ktlint.version>
+		<spring-boot.version>2.2.5.RELEASE</spring-boot.version>
+		<springfox-swagger2.version>2.9.2</springfox-swagger2.version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.jetbrains.kotlin</groupId>
+			<artifactId>kotlin-reflect</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.jetbrains.kotlin</groupId>
+			<artifactId>kotlin-stdlib-jdk8</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>org.junit.vintage</groupId>
+					<artifactId>junit-vintage-engine</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mustache</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.module</groupId>
+			<artifactId>jackson-module-kotlin</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<!--
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		-->
+		<dependency>
+			<groupId>org.flywaydb</groupId>
+			<artifactId>flyway-core</artifactId>
+			<version>${flyway.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>${mysql-connector-java.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jetbrains.kotlin</groupId>
+			<artifactId>kotlin-stdlib</artifactId>
+		</dependency>
+
+		<!-- Swagger -->
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>${springfox-swagger2.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>${springfox-swagger2.version}</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<finalName>${project.artifactId}</finalName>
+		<sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
+		<testSourceDirectory>${project.basedir}/src/test/kotlin</testSourceDirectory>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+				<excludes>
+					<exclude>*.jks</exclude>
+				</excludes>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>false</filtering>
+				<includes>
+					<include>*.jks</include>
+				</includes>
+			</resource>
+		</resources>
+		<testResources>
+			<testResource>
+				<directory>src/test/resources</directory>
+				<filtering>true</filtering>
+				<excludes>
+					<exclude>*.jks</exclude>
+				</excludes>
+			</testResource>
+		</testResources>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-javadoc-plugin</artifactId>
+					<configuration>
+						<quiet>true</quiet>
+						<!-- relax javadoc for Java 8 -->
+						<doclint>none</doclint>
+					</configuration>
+				</plugin>
+				<plugin>
+					<artifactId>kotlin-maven-plugin</artifactId>
+					<groupId>org.jetbrains.kotlin</groupId>
+					<version>${kotlin.version}</version>
+					<configuration>
+						<compilerPlugins>
+							<plugin>spring</plugin>
+							<plugin>jpa</plugin>
+						</compilerPlugins>
+						<jvmTarget>${java.version}</jvmTarget>
+					</configuration>
+					<dependencies>
+						<dependency>
+							<groupId>org.jetbrains.kotlin</groupId>
+							<artifactId>kotlin-maven-allopen</artifactId>
+							<version>${kotlin.version}</version>
+						</dependency>
+						<dependency>
+							<groupId>org.jetbrains.kotlin</groupId>
+							<artifactId>kotlin-maven-noarg</artifactId>
+							<version>1.3.60</version>
+						</dependency>
+
+					</dependencies>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-antrun-plugin</artifactId>
+					<version>1.8</version>
+				</plugin>
+
+
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<configuration>
+					<classesDirectory>${project.build.directory}/${project.artifactId}.jar.original</classesDirectory>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<artifactId>kotlin-maven-plugin</artifactId>
+				<groupId>org.jetbrains.kotlin</groupId>
+				<executions>
+					<execution>
+						<id>kapt</id>
+						<goals>
+							<goal>kapt</goal>
+						</goals>
+						<configuration>
+							<sourceDirs>
+								<sourceDir>src/main/kotlin</sourceDir>
+							</sourceDirs>
+							<annotationProcessorPaths>
+								<annotationProcessorPath>
+									<groupId>org.springframework.boot</groupId>
+									<artifactId>spring-boot-configuration-processor</artifactId>
+									<version>${spring-boot.version}</version>
+								</annotationProcessorPath>
+							</annotationProcessorPaths>
+						</configuration>
+					</execution>
+					<execution>
+						<id>compile</id>
+						<phase>compile</phase>
+						<goals>
+							<goal>compile</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>test-compile</id>
+						<phase>test-compile</phase>
+						<goals>
+							<goal>test-compile</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- Kotlin checkstyle -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>ktlint</id>
+						<phase>validate</phase>
+						<configuration>
+							<target name="ktlint">
+								<java taskname="ktlint" dir="${project.basedir}" fork="true" failonerror="true"
+									  classname="com.github.shyiko.ktlint.Main" classpathref="maven.plugin.classpath">
+									<arg value="src/**/*.kt"/>
+									<arg value="--reporter=plain"/>
+									<arg value="--reporter=checkstyle,output=${project.build.directory}/ktlint.xml"/>
+								</java>
+							</target>
+						</configuration>
+						<goals><goal>run</goal></goals>
+					</execution>
+					<execution>
+						<id>ktlint-format</id>
+						<configuration>
+							<target name="ktlint">
+								<java taskname="ktlint" dir="${project.basedir}" fork="true" failonerror="true"
+									  classname="com.github.shyiko.ktlint.Main" classpathref="maven.plugin.classpath">
+									<arg value="-F"/>
+									<arg value="src/**/*.kt"/>
+								</java>
+							</target>
+						</configuration>
+						<goals><goal>run</goal></goals>
+					</execution>
+				</executions>
+				<dependencies>
+					<dependency>
+						<groupId>com.github.shyiko</groupId>
+						<artifactId>ktlint</artifactId>
+						<version>${kotlin-ktlint.version}</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+		</plugins>
+		</pluginManagement>
+	</build>
+
+
+</project>
